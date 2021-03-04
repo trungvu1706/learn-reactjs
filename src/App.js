@@ -1,10 +1,34 @@
-import React from "react";
-import TodoFeature from "./features/todo";
+import React, { useEffect } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import TodoFeature from './features/todo';
+import AlbumFeature from './features/Album';
+import NotFound from './components/NotFound';
+import productApi from './api/productApi';
+import CounterFeature from './features/Counter';
+import Header from 'components/Header';
 
 function App() {
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const params = {
+        _limit: 20,
+      };
+      const productList = await productApi.getAll(params);
+      console.log(productList);
+    };
+    fetchProducts();
+  }, []);
+
   return (
     <div className="App">
-      <TodoFeature />
+      <Header />
+      <Switch>
+        <Route path="/" component={CounterFeature} exact />
+        <Route path="/todos" component={TodoFeature} />
+        <Route path="/albums" component={AlbumFeature} />
+
+        <Route component={NotFound} />
+      </Switch>
     </div>
   );
 }
