@@ -1,7 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Avatar, Button, makeStyles, Typography } from '@material-ui/core';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import { LockOpenOutlined } from '@material-ui/icons';
 import InputField from 'components/InputField';
+import PasswordField from 'components/PasswordField';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -10,6 +12,7 @@ import * as yup from 'yup';
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: theme.spacing(3),
+    position: 'relative',
   },
 
   avatar: {
@@ -25,62 +28,69 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 1, 0),
   },
+
+  progress: {
+    position: 'absolute',
+    top: theme.spacing(1),
+    left: 0,
+    right: 0,
+  },
 }));
 
-function RegisterForm(props) {
+function LoginForm(props) {
   const { onSubmit } = props;
   const classes = useStyles();
 
   const schema = yup.object().shape({
-    title: yup
+    identifier: yup
       .string()
-      .required('Please enter your tilte!')
-      .min(5, 'Your title is too short.'),
+      .required('Please enter your email')
+      .email('Your email is incorrect.'),
+
+    password: yup.string().required('Please enter your password.'),
   });
 
   const form = useForm({
     defaultValues: {
-      fullname: '',
-      email: '',
+      identifier: '',
       password: '',
-      confirmPassword: '',
     },
     resolver: yupResolver(schema),
   });
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     console.log(values);
     if (onSubmit) {
-      onSubmit(values);
+      await onSubmit(values);
     }
-    form.reset();
   };
+
+  const { isSubmitting } = form.formState;
 
   return (
     <div className={classes.root}>
+      {isSubmitting && <LinearProgress className={classes.progress} />}
+
       <Avatar className={classes.avatar}>
         <LockOpenOutlined />
       </Avatar>
 
       <Typography component="h2" variant="h5" className={classes.title}>
-        Register
+        Login
       </Typography>
 
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <InputField form={form} name="fullname" label="Full Name" />
-        <InputField form={form} name="email" label="Email" />
-        <InputField form={form} name="password" label="Password" />
-        <InputField
-          form={form}
-          name="confirmPassword"
-          label="Confirm password"
-        />
+        <InputField form={form} name="identifier" label="Email" />
+        <PasswordField form={form} name="password" label="Password" />
+
         <Button
+          disabled={isSubmitting}
           type="submit"
           className={classes.submit}
           fullWidth
           variant="contained"
-          color="primary">
+          color="primary"
+          size="large">
           Submit
         </Button>
       </form>
@@ -88,8 +98,8 @@ function RegisterForm(props) {
   );
 }
 
-RegisterForm.propTypes = {
+LoginForm.propTypes = {
   onSubmit: PropTypes.func,
 };
 
-export default RegisterForm;
+export default LoginForm;

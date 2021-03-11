@@ -15,10 +15,10 @@ function InputField(props) {
       control={form.control}
       name={name}
       as={TextField}
+      autoFocus
       variant="outlined"
       fullWidth
       label={label}
-      autoFocus
       margin="normal"
       disabled={disabled}
       error={!!hasError}
