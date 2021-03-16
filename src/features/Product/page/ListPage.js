@@ -2,7 +2,10 @@ import { Box, Container, Grid, makeStyles, Paper } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import productApi from 'api/productApi';
 import React, { useEffect, useState } from 'react';
+import ProductFilters from '../components/ProductFilters';
 import ProductList from '../components/ProductList';
+import ProductListSort from '../components/ProductListSort';
+import SkeletonFilter from '../components/SkeletonFilter';
 import SkeletonProductList from '../components/SkeletonProductList';
 
 const useStyles = makeStyles((theme) => ({
@@ -15,9 +18,16 @@ const useStyles = makeStyles((theme) => ({
   right: {
     flex: '1 1 0',
   },
+
+  paginationStyles: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '30px',
+    paddingBottom: '20px',
+  },
 }));
 
-const ListPage = (props) => {
+function ListPage() {
   const classes = useStyles();
 
   const [productList, setProductList] = useState([]);
@@ -25,9 +35,10 @@ const ListPage = (props) => {
   const [filter, setFilter] = useState({
     _page: 1,
     _limit: 10,
+    _sort: 'salePrice:ASC',
   });
 
-  const [pagination, setPageination] = useState({
+  const [pagination, setPagination] = useState({
     limit: 10,
     total: 10,
     page: 1,
@@ -39,7 +50,7 @@ const ListPage = (props) => {
         const { data, pagination } = await productApi.getAll(filter);
         console.log({ data, pagination });
         setProductList(data);
-        setPageination(pagination);
+        setPagination(pagination);
       } catch (error) {
         console.log('Failed to fetch data', error);
       }
@@ -48,10 +59,24 @@ const ListPage = (props) => {
     })();
   }, [filter]);
 
-  const handlePageChange = (page) => {
+  const handlePageChange = (e, page) => {
     setFilter((prevFilter) => ({
       ...prevFilter,
       _page: page,
+    }));
+  };
+
+  const handleSortChange = (newValue) => {
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      _sort: newValue,
+    }));
+  };
+
+  const handleFilterChange = (newFilter) => {
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      ...newFilter,
     }));
   };
 
@@ -60,30 +85,46 @@ const ListPage = (props) => {
       <Container>
         <Grid container spacing={1}>
           <Grid item className={classes.left}>
-            <Paper elevation={0}>Left</Paper>
+            <Paper elevation={0}>
+              {loading ? (
+                <SkeletonFilter />
+              ) : (
+                <ProductFilters
+                  onFilterChange={handleFilterChange}
+                  filter={filter}
+                />
+              )}
+            </Paper>
           </Grid>
 
           <Grid item className={classes.right}>
             <Paper elevation={0}>
+              <ProductListSort
+                currentSort={filter._sort}
+                onSortChange={handleSortChange}
+              />
+
               {loading ? (
                 <SkeletonProductList />
               ) : (
                 <ProductList data={productList} />
               )}
 
-              <Pagination
-                count={Math.ceil(pagination.total / pagination.limit)}
-                color="primary"
-                page={pagination.page}
-                onChange={handlePageChange}
-              />
+              <Box className={classes.paginationStyles}>
+                <Pagination
+                  count={Math.ceil(pagination.total / pagination.limit)}
+                  color="primary"
+                  page={pagination.page}
+                  onChange={handlePageChange}
+                />
+              </Box>
             </Paper>
           </Grid>
         </Grid>
       </Container>
     </Box>
   );
-};
+}
 
 ListPage.propTypes = {};
 

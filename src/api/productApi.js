@@ -16,7 +16,7 @@ const productApi = {
       params: newParams,
     });
 
-    console.log('here', newParams);
+    // console.log('here', params);
 
     //total of product
     const count = await axiosClient.get('/products/count', {
