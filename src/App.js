@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import NotFound from './components/NotFound';
 import AlbumFeature from './features/Album';
 import CounterFeature from './features/Counter';
-import TodoFeature from './features/Todo';
+import TodoFeature from './features/todo';
 
 function App() {
   return (

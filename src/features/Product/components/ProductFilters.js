@@ -1,12 +1,12 @@
 import { Box } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
-import FilterCategory from './Fitlters/FilterCategory';
+import { FilterCategory, FilterPrice } from './Fitlters';
 
 const ProductFilters = (props) => {
   const { filter, onFilterChange } = props;
 
-  const handleFilterChange = (newCategoryId) => {
+  const handleCategoryChange = (newCategoryId) => {
     if (!onFilterChange) return;
 
     const newFilter = {
@@ -17,9 +17,15 @@ const ProductFilters = (props) => {
     onFilterChange(newFilter);
   };
 
+  const handlePriceChange = (values) => {
+    console.log(values);
+    onFilterChange(values);
+  };
+
   return (
     <Box>
-      <FilterCategory onFilterChange={handleFilterChange} />
+      <FilterCategory onFilterChange={handleCategoryChange} />
+      <FilterPrice onFilterChange={handlePriceChange} />
     </Box>
   );
 };

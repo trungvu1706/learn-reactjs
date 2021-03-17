@@ -13,6 +13,11 @@ const useStyles = makeStyles((theme) => ({
 
   left: {
     width: '250px',
+    // padding: '0 20px 0 20px',
+  },
+
+  sub_left: {
+    padding: '0 10px 0 10px',
   },
 
   right: {
@@ -55,7 +60,7 @@ function ListPage() {
         console.log('Failed to fetch data', error);
       }
 
-      setLoading(false);
+      // setLoading(false);
     })();
   }, [filter]);
 
@@ -85,7 +90,7 @@ function ListPage() {
       <Container>
         <Grid container spacing={1}>
           <Grid item className={classes.left}>
-            <Paper elevation={0}>
+            <Paper elevation={0} className={classes.sub_left}>
               {loading ? (
                 <SkeletonFilter />
               ) : (

@@ -34,7 +34,7 @@ const FilterCategory = (props) => {
     (async () => {
       try {
         const res = await categoryApi.getAll();
-        console.log({ res });
+        // console.log({ res });
         setCategoryList(
           res.map((x) => ({
             id: x.id,
