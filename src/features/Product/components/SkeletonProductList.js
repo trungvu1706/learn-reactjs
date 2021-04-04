@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Box, Grid } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 
-const SkeletonProductList = ({ length }) => {
+const SkeletonProductList = ({ length = 6 }) => {
   return (
     <Box>
       <Grid container>
@@ -23,10 +23,6 @@ const SkeletonProductList = ({ length }) => {
 
 SkeletonProductList.propTypes = {
   length: PropTypes.number,
-};
-
-SkeletonProductList.defaultProps = {
-  length: 6,
 };
 
 export default SkeletonProductList;

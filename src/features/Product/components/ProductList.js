@@ -1,7 +1,6 @@
-import React from 'react';
+import { Box, Grid } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { Box, Grid, Typography } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
+import React from 'react';
 import Product from './Product';
 
 const ProductList = (props) => {
@@ -21,10 +20,6 @@ const ProductList = (props) => {
 
 ProductList.propTypes = {
   length: PropTypes.number,
-};
-
-ProductList.defaultProps = {
-  length: 6,
 };
 
 export default ProductList;

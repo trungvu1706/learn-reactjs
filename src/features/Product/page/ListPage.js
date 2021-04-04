@@ -1,7 +1,10 @@
 import { Box, Container, Grid, makeStyles, Paper } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import productApi from 'api/productApi';
-import React, { useEffect, useState } from 'react';
+import queryString from 'query-string';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useHistory, useLocation } from 'react-router';
+import FilterViewer from '../components/FilterViewer';
 import ProductFilters from '../components/ProductFilters';
 import ProductList from '../components/ProductList';
 import ProductListSort from '../components/ProductListSort';
@@ -35,13 +38,28 @@ const useStyles = makeStyles((theme) => ({
 function ListPage() {
   const classes = useStyles();
 
+  const history = useHistory();
+  const location = useLocation();
+  const queryParams = useMemo(() => {
+    const params = queryString.parse(location.search);
+    return {
+      ...params,
+      _page: Number.parseInt(params._page) || 1,
+      _limit: Number.parseInt(params._limit) || 10,
+      _sort: params._sort || 'salePrice:ASC',
+      isPromotion: params.isPromotion === 'true',
+      isFreeShip: params.isFreeShip === 'true',
+    };
+  }, [location.search]);
+
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState({
-    _page: 1,
-    _limit: 10,
-    _sort: 'salePrice:ASC',
-  });
+  // const [filter, setFilter] = useState(() => ({
+  //   ...queryParams,
+  //   _page: Number.parseInt(queryParams._page) || 1,
+  //   _limit: Number.parseInt(queryParams._limit) || 10,
+  //   _sort: queryParams._sort || 'salePrice:ASC',
+  // }));
 
   const [pagination, setPagination] = useState({
     limit: 10,
@@ -49,10 +67,18 @@ function ListPage() {
     page: 1,
   });
 
+  // useEffect(() => {
+  //   history.push({
+  //     pathname: history.location.pathname,
+  //     search: queryString.stringify(filter),
+  //   });
+  // }, [history, filter]);
+
   useEffect(() => {
     (async () => {
       try {
-        const { data, pagination } = await productApi.getAll(filter);
+        const { data, pagination } = await productApi.getAll(queryParams);
+
         console.log({ data, pagination });
         setProductList(data);
         setPagination(pagination);
@@ -60,29 +86,67 @@ function ListPage() {
         console.log('Failed to fetch data', error);
       }
 
-      // setLoading(false);
+      setLoading(false);
     })();
-  }, [filter]);
+  }, [queryParams]);
 
   const handlePageChange = (e, page) => {
-    setFilter((prevFilter) => ({
-      ...prevFilter,
+    // setFilter((prevFilter) => ({
+    //   ...prevFilter,
+    //   _page: page,
+    // }));
+
+    const filter = {
+      ...queryParams,
       _page: page,
-    }));
+    };
+
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filter),
+    });
   };
 
   const handleSortChange = (newValue) => {
-    setFilter((prevFilter) => ({
-      ...prevFilter,
+    // setFilter((prevFilter) => ({
+    //   ...prevFilter,
+    //   _sort: newValue,
+    // }));
+
+    const filter = {
+      ...queryParams,
       _sort: newValue,
-    }));
+    };
+
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filter),
+    });
   };
 
   const handleFilterChange = (newFilter) => {
-    setFilter((prevFilter) => ({
-      ...prevFilter,
+    // setFilter((prevFilter) => ({
+    //   ...prevFilter,
+    //   ...newFilter,
+    // }));
+
+    const filter = {
+      ...queryParams,
       ...newFilter,
-    }));
+    };
+
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filter),
+    });
+  };
+
+  const handleFilterViewChange = (newFilters) => {
+    // setFilter(newFilters);
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(newFilters),
+    });
   };
 
   return (
@@ -96,7 +160,7 @@ function ListPage() {
               ) : (
                 <ProductFilters
                   onFilterChange={handleFilterChange}
-                  filter={filter}
+                  filter={queryParams}
                 />
               )}
             </Paper>
@@ -105,8 +169,13 @@ function ListPage() {
           <Grid item className={classes.right}>
             <Paper elevation={0}>
               <ProductListSort
-                currentSort={filter._sort}
+                currentSort={queryParams._sort}
                 onSortChange={handleSortChange}
+              />
+
+              <FilterViewer
+                filter={queryParams}
+                onFilterChange={handleFilterViewChange}
               />
 
               {loading ? (
