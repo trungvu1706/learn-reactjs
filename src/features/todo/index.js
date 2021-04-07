@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Route,
-  Switch,
-  useRouteMatch,
-} from 'react-router-dom';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import NotFound from '../../components/NotFound';
 
 import DetailPage from './pages/DetailPage';
@@ -15,16 +11,8 @@ function TodoFeature(props) {
     <div>
       <h3>Todo feature</h3>
       <Switch>
-        <Route
-          path={match.path}
-          component={ListPage}
-          exact
-        />
-        <Route
-          path={`${match.path}/:todoId`}
-          component={DetailPage}
-          exact
-        />
+        <Route path={match.path} component={ListPage} exact />
+        <Route path={`${match.path}/:todoId`} component={DetailPage} exact />
 
         <Route component={NotFound} />
       </Switch>

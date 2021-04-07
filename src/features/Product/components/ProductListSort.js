@@ -14,7 +14,8 @@ const ProductListSort = (props) => {
       value={currentSort}
       onChange={handleSortChange}
       indicatorColor="primary"
-      textColor="primary">
+      textColor="primary"
+    >
       <Tab label="Ascending:" value="salePrice:ASC"></Tab>
       <Tab label="Descending:" value="salePrice:DESC"></Tab>
     </Tabs>

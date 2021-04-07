@@ -73,7 +73,8 @@ const FilterPrice = (props) => {
         variant="outlined"
         color="primary"
         size="small"
-        onClick={handleSubmit}>
+        onClick={handleSubmit}
+      >
         Search
       </Button>
     </Box>

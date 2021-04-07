@@ -90,7 +90,8 @@ function LoginForm(props) {
           fullWidth
           variant="contained"
           color="primary"
-          size="large">
+          size="large"
+        >
           Submit
         </Button>
       </form>

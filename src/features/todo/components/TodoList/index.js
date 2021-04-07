@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { List, Item, Title } from "./styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { List, Item, Title } from './styles';
 
 function TodoList(props) {
   const { todoList, onTodoClick } = props;
@@ -17,7 +17,7 @@ function TodoList(props) {
           {todoList.map((todo, idx) => (
             <Item
               key={todo.id}
-              completed={todo.status === "completed"}
+              completed={todo.status === 'completed'}
               onClick={() => handleTodoClick(todo, idx)}
             >
               {todo.title}

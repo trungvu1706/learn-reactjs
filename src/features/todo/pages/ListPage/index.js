@@ -1,10 +1,6 @@
 import queryString from 'query-string';
 import React, { useEffect, useMemo, useState } from 'react';
-import {
-  useHistory,
-  useLocation,
-  useRouteMatch,
-} from 'react-router-dom';
+import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import TodoForm from '../../components/TodoForm';
 import TodoList from '../../components/TodoList';
 import { Button } from '../../components/TodoList/styles';
@@ -25,13 +21,11 @@ function ListPage(props) {
   const match = useRouteMatch();
   // console.log(location);
   const [todoList, setTodoList] = useState(initTodoList);
-  const [filteredStatus, setFilteredStatus] = useState(
-    () => {
-      const params = queryString.parse(location.search);
-      console.log(params);
-      return params.status || 'all';
-    }
-  );
+  const [filteredStatus, setFilteredStatus] = useState(() => {
+    const params = queryString.parse(location.search);
+    console.log(params);
+    return params.status || 'all';
+  });
   //   console.log(todoList);
 
   useEffect(() => {
@@ -45,10 +39,7 @@ function ListPage(props) {
     const newTodoList = [...todoList];
     newTodoList[idx] = {
       ...newTodoList[idx],
-      status:
-        newTodoList[idx].status === 'new'
-          ? 'completed'
-          : 'new',
+      status: newTodoList[idx].status === 'new' ? 'completed' : 'new',
     };
 
     setTodoList(newTodoList);
@@ -80,9 +71,7 @@ function ListPage(props) {
 
   const renderFilteredTodoList = useMemo(() => {
     return todoList.filter(
-      (todo) =>
-        filteredStatus === 'all' ||
-        filteredStatus === todo.status
+      (todo) => filteredStatus === 'all' || filteredStatus === todo.status
     );
   }, [todoList, filteredStatus]);
   //   console.log(renderFilteredTodoList);
@@ -110,9 +99,7 @@ function ListPage(props) {
         />
         <Button onClick={handleShowAll}>Show all</Button>
         <Button onClick={handleShowNew}>Show new</Button>
-        <Button onClick={handleShowCompleted}>
-          Show completed
-        </Button>
+        <Button onClick={handleShowCompleted}>Show completed</Button>
       </center>
     </div>
   );

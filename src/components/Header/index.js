@@ -139,7 +139,8 @@ function Header() {
           vertical: 'top',
           horizontal: 'right',
         }}
-        getContentAnchorEl={null}>
+        getContentAnchorEl={null}
+      >
         <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
         <MenuItem onClick={handleClickLogOut}>Logout</MenuItem>
       </Menu>
@@ -149,7 +150,8 @@ function Header() {
         disableEscapeKeyDown
         open={open}
         onClose={handleClose}
-        aria-labelledby="form-dialog-title">
+        aria-labelledby="form-dialog-title"
+      >
         <DialogContent>
           <IconButton className={classes.closeBtn} onClick={handleClose}>
             <Close />
@@ -173,7 +175,8 @@ function Header() {
                 <Box className={classes.mode}>
                   <Button
                     onClick={() => setMode(MODE.REGISTER)}
-                    color="primary">
+                    color="primary"
+                  >
                     Do not have an account. Register here!
                   </Button>
                 </Box>
