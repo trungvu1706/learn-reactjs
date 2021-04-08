@@ -12,9 +12,10 @@ function App() {
     <div className="App">
       <Header />
       <Switch>
-        <Route path="/" component={CounterFeature} exact />
+        <Route path="/count" component={CounterFeature} />
         <Route path="/todos" component={TodoFeature} />
         <Route path="/albums" component={AlbumFeature} />
+        <Route path="/" component={ProductFeature} exact />
         <Route path="/products" component={ProductFeature} />
 
         <Route component={NotFound} />

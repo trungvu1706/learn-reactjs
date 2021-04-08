@@ -1,10 +1,14 @@
 import React from 'react';
 import { Box, Container, Grid, makeStyles, Paper } from '@material-ui/core';
 import ProductThumbnail from '../components/ProductThumbnail';
-import { useRouteMatch } from 'react-router-dom';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import useProductDetail from '../hooks/useProductDetail';
 import ProductInfo from '../components/ProductInfo';
 import AddToCartForm from '../components/AddToCartForm';
+import ProductMenu from '../components/ProductMenu';
+import ProductDescription from '../components/ProductDescription';
+import ProductAddition from '../components/ProductAddition';
+import ProductReviewers from '../components/ProductReviewers';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -25,6 +29,7 @@ const DetailPage = () => {
   const classes = useStyles();
   const {
     params: { productId },
+    url,
   } = useRouteMatch();
 
   const { product, loading } = useProductDetail(productId);
@@ -50,6 +55,19 @@ const DetailPage = () => {
             </Grid>
           </Grid>
         </Paper>
+        <ProductMenu />
+
+        <Switch>
+          <Route path={`${url}/description`}>
+            <ProductDescription product={product} />
+          </Route>
+
+          <Route
+            path={`${url}/additional_information`}
+            component={ProductAddition}
+          />
+          <Route path={`${url}/reviews`} component={ProductReviewers} />
+        </Switch>
       </Container>
     </Box>
   );

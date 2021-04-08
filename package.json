@@ -12,6 +12,7 @@
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.1",
     "axios": "^0.21.1",
+    "dompurify": "^2.2.7",
     "notistack": "^1.0.5",
     "query-string": "^4.3.4",
     "react": "^17.0.1",

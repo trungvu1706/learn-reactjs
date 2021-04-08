@@ -1,12 +1,7 @@
 import { Box } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  FilterCategory,
-  FilterPrice,
-  FilterService,
-  FilterViewer,
-} from './Fitlters';
+import { FilterCategory, FilterPrice, FilterService } from './Fitlters';
 
 const ProductFilters = (props) => {
   const { filter, onFilterChange } = props;

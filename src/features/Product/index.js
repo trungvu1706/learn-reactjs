@@ -1,6 +1,6 @@
 import { Box } from '@material-ui/core';
 import React from 'react';
-import { Route, Switch, useRouteMatch } from 'react-router';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import ListPage from './page/ListPage';
 import DetailPage from './page/DetailPage';
 
